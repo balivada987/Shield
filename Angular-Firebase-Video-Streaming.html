@@ -1,0 +1,175 @@
+<head>
+  <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.0.4/angular.js"></script>
+  <link rel="stylesheet" type="text/css" href="Angular-firebase-Video.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+    <!-- Fonts -->
+    <link href='https://fonts.googleapis.com/css?family=Cormorant+Garamond:400,300italic,600italic' rel='stylesheet' type="text/css">
+    <link href='https://fonts.googleapis.com/css?family=Cedarville+Cursive' rel='stylesheet' type='text/css'>
+</head>
+<body ng-app>
+<h1 id="bigOne"></h1>
+<style media="screen">
+  #VideoDisplay {
+    display: flex;
+    min-height: 100vh;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+  }
+  </style>
+<div class="container" >
+<div class="section">
+<div class="row">
+
+<div class="col-md-12">
+<div><h1 align="center">SHIELD</h1></div>
+</div>
+</div>
+
+<div class="col-md-6">
+<h4>Name: Jhonson Joseph</h4>
+<h4>Address: 301 Main St, Columbia, SC 29208</h4>
+<h4>Email: jjohnson@mailbox.sc.edu</h4>
+<h4>Notify: jjohnson@mailbox.sc.edu</h4>
+<h4>Auto: jjohnson@mailbox.sc.edu</h4>
+<h4>Phone:+1(123)456789</h4>
+<h4>Tag: ABCDEF</h4>
+</div>
+<div class="col-md-6" align="right"><span class="pull-right">
+<img src="http://www.physics.sc.edu/sites/physics.sc.edu/files/styles/person_photo/public/JJohnson.jpg?itok=ISPHIIkN"></span>
+
+</div>
+</div>
+<div class="row">
+<div class="btn-group btn-group-justified" role="group">
+  <div class="btn-group" role="group">
+  <form action="mailto:balivada141@gmail.com" >
+    <button type="submit" class="btn btn-primary" >Law Enforcement</button>
+    </form>
+  </div>
+  <div class="btn-group" role="group">
+    <button type="button" class="btn btn-success">Medical</button>
+  </div>
+  <div class="btn-group" role="group">
+    <button type="button" class="btn btn-danger">Fire</button>
+    
+  </div>
+  <div class="btn-group" role="group">
+    <button type="button" class="btn btn-warning">HP</button>
+  </div>
+</div>
+<div class="row">
+
+<div class="col-md-12">
+<div class="row">
+<div class="col-md-12" align="center">
+
+  </div>
+</div>
+
+
+<div id="VideoStream" align="right"></div>
+</div>
+
+  
+</div>
+</div>
+
+</div>
+</div>
+
+
+<script src="https://www.gstatic.com/firebasejs/3.4.0/firebase.js"></script>
+<script>
+  // Initialize Firebase
+  var config = {
+    apiKey: "AIzaSyBrCXjD3jMihZ_gk0-rLnE17RBZsAXlRsg",
+    authDomain: "watchman-ad40f.firebaseapp.com",
+    databaseURL: "https://watchman-ad40f.firebaseio.com",
+    storageBucket: "watchman-ad40f.appspot.com",
+    messagingSenderId: "1015495167063"
+  };
+  firebase.initializeApp(config);
+
+  var bigOne = document.getElementById('bigOne');
+  var childData_VideoUrl;
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  var storageRetrieve_Index = 0;
+  window.onload = function updateVideos(){
+
+    var vid_dbRef = firebase.database().ref('mulpk/data/incident_6/');
+    vid_dbRef.on("value", function(snapshot) {
+      var html_toappend = "";
+      // The callback function will get called twice, once for "fred" and once for "barney"
+      var j=0;
+      snapshot.forEach(function(childSnapshot) {
+        //var key_info = childSnapshot.key();
+        // childData will be the actual contents of the child
+        var i=0;
+        j = j+1;
+        var name;
+        var longi;
+        var lati;
+
+        childSnapshot.forEach(function(childchildsnapshot) {
+          //alert(childchildsnapshot.val());
+          //var childData_info = childchildsnapshot.key();
+          i = i+1;
+          if(i==4)//firstname
+          {
+            name = childchildsnapshot.val();
+          }
+          if(i==3)//longitude
+          {
+            longi = childchildsnapshot.val();
+          }
+          if(i==2)//latitude
+          {
+            lati = childchildsnapshot.val();
+          }
+          if(i==1)//url
+          {
+            var storageRef1 = firebase.storage().ref('videos/'+childchildsnapshot.val());
+            storageRef1.getDownloadURL().then(function(url){
+
+              storageRetrieve_Index = storageRetrieve_Index + 1;
+
+              if(storageRetrieve_Index==1){
+                console.log(storageRetrieve_Index+" ---- "+url);
+                document.getElementById("video1").src = url;
+              }
+              if(storageRetrieve_Index==2){
+                console.log(storageRetrieve_Index+" ---- "+url);
+                document.getElementById("video2").src = url;
+              }
+              if(storageRetrieve_Index==3){
+                console.log(storageRetrieve_Index+" ---- "+url);
+                document.getElementById("video3").src = url;
+              }
+              if(storageRetrieve_Index==4){
+                console.log(storageRetrieve_Index+" ---- "+url);
+                document.getElementById("video4").src = url;
+              }
+
+              if(storageRetrieve_Index==5){
+                console.log(storageRetrieve_Index+" ---- "+url);
+                document.getElementById("video5").src = url;
+              }
+            });
+            //childData_VideoUrl = childchildsnapshot.val();
+            //alert(childData_VideoUrl);
+          }
+        });
+
+        var map = '<iframe width="550" height="300" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://maps.google.co.in/maps?f=q&amp;source=s_q&amp;hl=en&amp;geocode=&amp;q='+lati+','+longi+'&amp;aq=&amp;sll='+lati+','+longi+'&amp;sspn=0.186173,0.338173&amp;ie=UTF8&amp;t=m&amp;z=14&amp;ll='+lati+','+longi+'&amp;output=embed"></iframe><br /><small><a href="https://maps.google.co.in/maps?f=q&amp;source=embed&amp;hl=en&amp;geocode=&amp;q='+lati+','+longi+'&amp;aq=&amp;sll='+lati+','+longi+'&amp;sspn=0.186173,0.338173&amp;ie=UTF8&amp;t=m&amp;z=14&amp;ll='+lati+','+longi+'" style="color:#0000FF;text-align:left">View Larger Map</a></small>'
+        html_toappend = html_toappend + '<h4>Name :<nbsp>'+name+'</h4><video id="video'+j+'" width="550" height="300" src="https://www.youtube.com/watch?v=LKFuXETZUsI" controls>Your browser does not support the video tag.</video>&nbsp'+map;
+      });
+      var div = document.getElementById('VideoStream');
+      div.innerHTML = html_toappend;
+    });
+  }
+  </script>
+</body>

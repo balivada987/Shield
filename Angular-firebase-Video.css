@@ -1,0 +1,32 @@
+#VideoDisplay {
+    display: flex;
+    min-height: 100%;
+    align-items: right;
+    VideoStream
+    
+
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    
+    justify-content: center;
+    flex-direction: column;
+  }
+ .col-md-12{
+	font-family: 'Cormorant Garamond', serif;
+	font-weight: "Light 400 Italic";
+}
+.col-md-6{
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: "Light 400 Italic";
+}
+
+ .col-md-1{
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: "Light 400 Italic";
+    text-align: 'center'
+
+}
+.row{
+    border: border-style: dotted;
+}
